@@ -17,5 +17,6 @@ def find_road_boundary(filepath):
   clusters_array = cluster.get_clusters(pc_array, db)
   thresholded_clusters_array = cluster.get_clusters_above_threshold(clusters_array, threshold=30)
   pc_clusters = pcl.PointCloud(np.concatenate(thresholded_clusters_array))
-  pc_final = filter.altitude_threshold(pc_clusters)
+  pc_upsampled = filter.kd_tree_upsample(pc_clusters, point_cloud, iterations=10)
+  pc_final = filter.altitude_threshold(pc_upsampled)
   return pc_final
