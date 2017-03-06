@@ -12,7 +12,7 @@ def voxel_grid(point_cloud):
   fil.set_leaf_size(0.1, 0.1, 0.1)
   return fil.filter()
 
-def altitude_threshold(point_cloud, min_percentile=5, max_percentile=85):
+def altitude(point_cloud, min_percentile=3, max_percentile=85):
   array = np.asarray(point_cloud)
   min_threshold = np.percentile(array[:,2], min_percentile)
   max_threshold = np.percentile(array[:,2], max_percentile)

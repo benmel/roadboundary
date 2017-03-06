@@ -5,7 +5,7 @@ import cluster
 import pcl
 import numpy as np
 
-def find_road_boundary(filepath):
+def get_road_boundary_point_cloud(filepath):
   meters_array = load.meters_array_from_file(filepath)
   point_cloud = pcl.PointCloud(meters_array[:,[0,1,2]])
   pc_filtered = filter.statistical_outlier(point_cloud)
@@ -18,5 +18,5 @@ def find_road_boundary(filepath):
   thresholded_clusters_array = cluster.get_clusters_above_threshold(clusters_array, threshold=30)
   pc_clusters = pcl.PointCloud(np.concatenate(thresholded_clusters_array))
   pc_upsampled = filter.kd_tree_upsample(pc_clusters, point_cloud, iterations=10)
-  pc_final = filter.altitude_threshold(pc_upsampled)
+  pc_final = filter.altitude(pc_upsampled, min_percentile=3, max_percentile=85)
   return pc_final
