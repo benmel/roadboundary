@@ -14,7 +14,8 @@ def find_road_boundary(filepath):
   pc_boundary = segment.normal_plane(pc_minus_roads, distance_threshold=1.0)
   pc_array = np.asarray(pc_boundary)
   db = cluster.dbscan(pc_array)
-  pc_clusters = cluster.get_clusters(pc_array, db)
-  pc_final_clusters = cluster.get_clusters_above_threshold(pc_clusters, threshold=30)
-  pc_final = pcl.PointCloud(np.concatenate(pc_final_clusters))
+  clusters_array = cluster.get_clusters(pc_array, db)
+  thresholded_clusters_array = cluster.get_clusters_above_threshold(clusters_array, threshold=30)
+  pc_clusters = pcl.PointCloud(np.concatenate(thresholded_clusters_array))
+  pc_final = filter.altitude_threshold(pc_clusters)
   return pc_final
